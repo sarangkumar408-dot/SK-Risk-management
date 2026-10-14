@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Risk Management System</title>
+    <meta name="description" content="Admin dashboard for invoice management and message inbox in the Risk Management System." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-dashboard-page="true">
+    <header class="site-header">
+      <div class="container navbar">
+        <a href="dashboard.html" class="brand brand-lockup" aria-label="SK Risk Management dashboard home">
+          <span class="brand-badge" aria-hidden="true">
+            <svg viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shield logo">
+              <path d="M55 6 L87 18 L87 52 C87 75 74 91 55 100 C36 91 23 75 23 52 L23 18 L55 6 Z" fill="#0a2a42" stroke="#d9b767" stroke-width="4"/>
+              <circle cx="54" cy="48" r="22" fill="none" stroke="#d9b767" stroke-width="6"/>
+              <path d="M69 60 L54 76 L42 64" fill="none" stroke="#d9b767" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M77 69 L88 81" fill="none" stroke="#d9b767" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="brand-text">
+            <span class="brand-wordmark">
+              <span class="brand-sk">SK</span>
+              <span class="brand-name">RISK MANAGEMENT</span>
+            </span>
+            <span class="brand-tagline">Trust Verified. Risk Controlled.</span>
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Dashboard navigation">
+          <a href="dashboard.html">Overview</a>
+          <a href="/">Website</a>
+          <a href="contact.html">Support</a>
+        </nav>
+
+        <div class="nav-actions">
+          <span style="color: var(--muted); font-weight: 600;">Welcome, <strong id="currentUserName">Administrator</strong></span>
+          <button id="logoutBtn" class="btn btn-primary" type="button">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section admin-hero">
+        <div class="container admin-hero-shell">
+          <div class="admin-hero-copy">
+            <span class="kicker">Risk Operations Center</span>
+            <h1>Track risk, revenue, and service health in one place.</h1>
+            <p>Monitor invoice movement, incoming queries, and portfolio performance from a single real-time dashboard built for fast operational decisions.</p>
+
+            <div class="hero-actions">
+              <button type="button" class="btn btn-primary">New report</button>
+              <button type="button" class="btn btn-secondary">Review queue</button>
+            </div>
+
+            <div class="hero-trust">
+              <span>Live monitoring</span>
+              <span>Audit ready</span>
+              <span>Secure access</span>
+            </div>
+          </div>
+
+          <div class="admin-hero-panel">
+            <div class="mini-overview">
+              <div class="mini-overview-head">
+                <span>Portfolio health</span>
+                <span class="trend up">+12.4%</span>
+              </div>
+
+              <div class="mini-chart" aria-hidden="true">
+                <span style="height: 38%"></span>
+                <span style="height: 52%"></span>
+                <span style="height: 46%"></span>
+                <span style="height: 68%"></span>
+                <span style="height: 74%"></span>
+                <span style="height: 86%"></span>
+                <span style="height: 100%"></span>
+              </div>
+            </div>
+
+            <div class="mini-metrics">
+              <div>
+                <small>Today’s Alerts</small>
+                <strong>14</strong>
+              </div>
+              <div>
+                <small>Last Login</small>
+                <strong id="lastLogin">--</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <small>Total Revenue</small>
+              <strong>₹48.2L</strong>
+            </div>
+            <div class="stat-card">
+              <small>Pending Invoices</small>
+              <strong>₹9.6L</strong>
+            </div>
+            <div class="stat-card">
+              <small>Unread Messages</small>
+              <strong>26</strong>
+            </div>
+            <div class="stat-card">
+              <small>Active Clients</small>
+              <strong>27</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section admin-section">
+        <div class="container dashboard-grid">
+          <article class="panel panel-large">
+            <div class="panel-header">
+              <div>
+                <span class="kicker compact">Finance</span>
+                <h3>Invoice Management</h3>
+              </div>
+              <div class="panel-actions">
+                <button id="addInvoiceBtn" class="btn btn-primary small-btn" type="button">Add Invoice</button>
+                <button class="btn btn-secondary small-btn" type="button">Export</button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Invoice</th>
+                    <th>Client</th>
+                    <th>Amount</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="invoiceTableBody"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <aside class="panel panel-aside">
+            <div class="panel-header">
+              <div>
+                <span class="kicker compact">Inbox</span>
+                <h3>Messages</h3>
+              </div>
+              <button class="btn btn-secondary small-btn" type="button">Compose</button>
+            </div>
+
+            <div id="messageList" class="message-list"></div>
+          </aside>
+        </div>
+      </section>
+
+      <div id="invoiceModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-card">
+          <div class="modal-header">
+            <h3 id="invoiceModalTitle">Edit Invoice</h3>
+            <button id="closeInvoiceModal" class="close-modal" type="button" aria-label="Close">×</button>
+          </div>
+
+          <form id="invoiceForm">
+            <input id="invoiceId" type="hidden" />
+            <div class="form-grid">
+              <div class="field">
+                <label for="invoiceNumber">Invoice Number</label>
+                <input id="invoiceNumber" type="text" required />
+              </div>
+              <div class="field">
+                <label for="invoiceClient">Client</label>
+                <input id="invoiceClient" type="text" required />
+              </div>
+              <div class="field">
+                <label for="invoiceAmount">Amount</label>
+                <input id="invoiceAmount" type="text" required />
+              </div>
+              <div class="field">
+                <label for="invoiceDueDate">Due Date</label>
+                <input id="invoiceDueDate" type="text" required />
+              </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="invoiceStatus">Status</label>
+                <select id="invoiceStatus">
+                  <option>Paid</option>
+                  <option>Pending</option>
+                  <option>Review</option>
+                  <option>Overdue</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="hero-actions modal-actions">
+              <button class="btn btn-primary" type="submit">Save Changes</button>
+              <button class="btn btn-secondary" id="cancelInvoiceEdit" type="button">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <div class="module-grid">
+            <article class="module-card">
+              <div class="icon">🏦</div>
+              <h3>Client Overview</h3>
+              <p>27 active clients including banks, NBFCs, fintechs, and insurance companies.</p>
+            </article>
+            <article class="module-card">
+              <div class="icon">📍</div>
+              <h3>Field Activity</h3>
+              <p>1,842 live verifications with GPS tracking and geo-tagged photos submitted today.</p>
+            </article>
+            <article class="module-card">
+              <div class="icon">📈</div>
+              <h3>Agency Performance</h3>
+              <p>94.6% average quality score and improved turnaround time across active vendors.</p>
+            </article>
+            <article class="module-card">
+              <div class="icon">💰</div>
+              <h3>Revenue</h3>
+              <p>₹45.8L recorded in monthly billing and payout summary across all agencies.</p>
+            </article>
+            <article class="module-card">
+              <div class="icon">🧾</div>
+              <h3>Reports</h3>
+              <p>Daily MIS, client-wise MIS, property verification reports, and RCU summaries ready.</p>
+            </article>
+            <article class="module-card">
+              <div class="icon">🤖</div>
+              <h3>AI Risk Engine</h3>
+              <p>Risk engine flagged 183 medium risk and 54 high risk applications for review.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container copy-row">
+        <span>© <span data-year></span> Risk Management System.</span>
+        <span>Secure admin access</span>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
